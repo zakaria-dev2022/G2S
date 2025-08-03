@@ -8,12 +8,15 @@
 
         // Loading overlay
         window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('loadingOverlay').style.opacity = '0';
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
                 setTimeout(() => {
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                }, 500);
-            }, 1000);
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+                }, 1000);
+            }
         });
 
         // Navbar scroll effect
