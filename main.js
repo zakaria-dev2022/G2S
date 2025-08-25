@@ -1,111 +1,118 @@
-{/* <script> */}
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
-        });
+// Initialize AOS when the library is loaded from CDN
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize AOS animations
+  const AOS = window.AOS // Declare the AOS variable
+  if (typeof AOS !== "undefined") {
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100,
+    })
+  }
 
-        // Loading overlay
-        window.addEventListener('load', function() {
-            const overlay = document.getElementById('loadingOverlay');
-            if (overlay) {
-                setTimeout(() => {
-                    overlay.style.opacity = '0';
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                    }, 500);
-                }, 1000);
-            }
-        });
+  // WhatsApp floating button animation
+  const whatsappFloat = document.querySelector(".whatsapp-float")
+  if (whatsappFloat) {
+    setTimeout(() => {
+      whatsappFloat.style.animation = "pulse 2s ease-in-out infinite"
+    }, 3000)
+  }
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+  // Mobile menu improvements
+  const navbarToggler = document.querySelector(".navbar-toggler")
+  const navbarCollapse = document.querySelector(".navbar-collapse")
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Animation de soumission
-            const btn = this.querySelector('button[type="submit"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Envoi en cours...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check me-2"></i>Message envoyé !';
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-success');
-                
-                setTimeout(() => {
-                    alert('شكرا لك! Merci pour votre demande ! Notre équipe G2S vous contactera dans les plus brefs délais.');
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    btn.classList.remove('btn-success');
-                    btn.classList.add('btn-primary');
-                    this.reset();
-                }, 2000);
-            }, 2000);
-        });
-
-        // Parallax effect for hero section
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero-section::before');
-            const speed = scrolled * 0.5;
-        });
-
-        // Counter animation for stats (if needed)
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                element.textContent = Math.floor(current);
-                if (current >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                }
-            }, 20);
+  if (navbarToggler && navbarCollapse) {
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (navbarCollapse.classList.contains("show")) {
+          navbarToggler.click()
         }
+      })
+    })
+  }
+})
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+// Navbar scroll effect
+window.addEventListener("scroll", () => {
+  const navbar = document.querySelector(".navbar")
+  if (window.scrollY > 50) {
+    navbar.classList.add("scrolled")
+  } else {
+    navbar.classList.remove("scrolled")
+  }
+})
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
-            });
-        }, observerOptions);
+// Smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault()
+    const target = document.querySelector(this.getAttribute("href"))
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }
+  })
+})
 
-        // Observe all service cards
-        document.querySelectorAll('.service-card, .process-card').forEach(card => {
-            observer.observe(card);
-        });
-    {/* </script> */}
+// Counter animation for stats (if needed)
+function animateCounter(element, target) {
+  let current = 0
+  const increment = target / 100
+  const timer = setInterval(() => {
+    current += increment
+    element.textContent = Math.floor(current)
+    if (current >= target) {
+      element.textContent = target
+      clearInterval(timer)
+    }
+  }, 20)
+}
+
+// Intersection Observer for animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: "0px 0px -50px 0px",
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("animate")
+    }
+  })
+}, observerOptions)
+
+// Observe all service cards when DOM is loaded
+window.addEventListener("load", () => {
+  document.querySelectorAll(".service-card, .process-card").forEach((card) => {
+    observer.observe(card)
+  })
+})
+
+// Improved responsive behavior
+function handleResize() {
+  const heroImagesContainer = document.querySelector(".hero-images-container")
+  if (window.innerWidth <= 768 && heroImagesContainer) {
+    heroImagesContainer.style.height = "400px"
+  } else if (heroImagesContainer) {
+    heroImagesContainer.style.height = "600px"
+  }
+}
+
+window.addEventListener("resize", handleResize)
+window.addEventListener("load", handleResize)
+
+// Loading animation (optional)
+window.addEventListener("load", () => {
+  const loadingOverlay = document.querySelector(".loading-overlay")
+  if (loadingOverlay) {
+    loadingOverlay.style.opacity = "0"
+    setTimeout(() => {
+      loadingOverlay.style.display = "none"
+    }, 500)
+  }
+})
